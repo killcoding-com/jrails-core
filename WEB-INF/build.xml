@@ -1,0 +1,86 @@
+<?xml version="1.0" ?>
+<!--
+Using scr plguin
+cd /src/lib/ant/default/lib
+wget https://xxx.com/jsch-xxx.jar
+-->
+<project name="jrails-killcoding" default="build" basedir=".">
+	<property environment="env" />
+	<property name="jr.version" value="1.1" />
+	<property name="jr.charset" value="UTF-8" />
+	<property name="jr.root" location="../" />
+	<property name="jr.docs" value="${jr.root}/public/docs" />
+	<property name="jr.src" value="${jr.root}/WEB-INF/src" />
+	<property name="jr.lib" value="${jr.root}/WEB-INF/lib" />
+	<property name="jr.build" value="${jr.root}/WEB-INF/build" />
+	<property name="jr.classes" value="${jr.root}/WEB-INF/classes" />
+	<property name="jr.core.jar" value="${jr.build}/${ant.project.name}-${jr.version}.jar" />
+	<property name="jr.war" value="/app/data/${ant.project.name}.war" />
+	<property name="jr.tomcat.webapps" value="/src/lib/tomcat/default/webapps/" />
+	<path id="classpath">
+		<fileset dir="${jr.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<target name="clear">
+		<delete dir="${jr.build}" />
+		<delete dir="${jr.classes}" />
+		<delete dir="${jr.docs}" />
+		<delete dir="${jr.tomcat.webapps}/core/" />
+		<mkdir dir="${jr.build}" />
+		<mkdir dir="${jr.build}/classes" />
+		<mkdir dir="${jr.classes}" />
+		<mkdir dir="${jr.docs}" />
+	</target>
+	<target name="compile" depends="clear">
+		<javac debug="true" includeAntRuntime="false" destdir="${jr.classes}" encoding="${jr.charset}" nowarn="true">
+			<src>
+				<pathelement location="${jr.src}" />
+			</src>
+			<compilerarg line="-Xlint:-unchecked -Xlint:-deprecation"/>
+			<compilerarg value="-Xlint:none"/>
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+	<target name="package" depends="compile">
+		<jar jarfile="${jr.build}/app.jar">
+			<fileset dir="${jr.classes}">
+				<include name="app/**/**/*" />
+			</fileset>
+		</jar>
+		<jar jarfile="${jr.core.jar}">
+			<fileset dir="${jr.classes}">
+				<include name="net/rails/**/*" />
+			</fileset>
+		</jar>
+	</target>
+	<target name="cdocs">
+		<javadoc destdir="${jr.docs}" encoding="${jr.charset}" docencoding="${jr.charset}" charset="${jr.charset}" maxmemory="512M" useexternalfile="yes">
+			<fileset dir="${jr.src}">
+				<include name="net/rails/**/*" />
+			</fileset>
+		</javadoc>
+	</target>
+	<target name="makewar" depends="package">
+		<war warfile="${jr.war}" webxml="${jr.root}/WEB-INF/web.xml">
+			<lib dir="${jr.lib}">
+				<include name="**" />
+			</lib>
+			<fileset dir="${jr.root}" >
+			    <exclude name="WEB-INF/src/" />
+			    <exclude name="WEB-INF/doc/" />
+				<exclude name="WEB-INF/log/" />
+				<exclude name="WEB-INF/build/" />
+			</fileset>
+		</war>
+	</target>
+	
+	<target name="release" depends="package">
+	    <scp file="${jr.core.jar}" sftp="true" trust="true" port="13004" todir="root:dev2016@killcoding.org:/src/data" />
+	</target>
+
+	<target name="build">
+	    <ant target="release" />
+	</target>
+
+</project>

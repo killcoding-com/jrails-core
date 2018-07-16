@@ -1,0 +1,434 @@
+
+/*!
+* Ext JS Library 4.0
+* Copyright(c) 2006-2011 Sencha Inc.
+* licensing@sencha.com
+* http://www.sencha.com/license
+*/
+
+/**mask z-index bug**/
+.x-mask {
+	background: none repeat scroll 0 0 #FFFFFF;
+	opacity: 0.4;
+	FILTER: alpha(opacity = 40);
+	-moz-opacity: 0.4;
+	z-index: 9999999;
+}
+
+.x-mask-msg {
+	background-color: #E5E5E5;
+	background-image: none;
+	border-radius: 3px;
+	padding: 8px;
+	z-index: 9999999;
+}
+
+/**begin desktop css**/
+#poweredby {
+    position: absolute;
+    bottom: 40px;
+    right: 20px;
+    z-index: 15000;
+
+    /* IE 5-7 */
+    filter: alpha(opacity=70);
+    /* Netscape */
+    -moz-opacity: 0.7;
+    /* Safari 1.x */
+    -khtml-opacity: 0.7;
+    /* Good browsers */
+    opacity: 0.7;
+}
+
+#poweredby div {
+    position: relative;
+    width: 150px;
+    height: 25px;
+    background-image: url($g.options.images/desktop/powered-by-ext-js.png);
+    background-repeat: no-repeat;
+}
+
+/* The simple background image PNG does not work in IE6-8, but does in IE9 */
+.x-ie6 #poweredby div,
+.x-ie7 #poweredby div,
+.x-ie8 #poweredby div {
+    background-image: none;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/powered-by-ext-js.png', sizingMethod='scale');
+}
+
+/*----------------------------------------------------
+    Start Button
+*/
+
+.ux-start-button-icon {
+    background-image: url($g.options.images/desktop/taskbar/sencha.gif) !important;
+    background-color: transparent;
+}
+
+.ux-start-button .x-btn-arrow {
+    background-image: none;
+}
+
+.ux-taskbar {
+    padding-left: 4px !important;
+}
+
+/*
+    Start Button (Black)
+*/
+
+.ux-desktop-black .ux-start-button {
+    height: 28px;
+    padding: 0px;
+    display: block;
+}
+
+.ux-desktop-black .ux-start-button em {
+    margin-top: 5px;
+}
+
+.ux-desktop-black .ux-start-button .x-btn-inner {
+    color: black;
+    font-size:11px;
+    font-weight: bold;
+}
+
+.ux-desktop-black .ux-start-button {
+    background-image: -moz-linear-gradient(center top , #E4F3FF, #D9EDFF 48%, #C2D8F2 52%, #C6DCF6);
+    border-radius: 8px 8px 8px 8px;
+    border-color: #81A4D0;
+}
+
+/*----------------------------------------------------
+    Start Menu
+*/
+
+.ux-start-menu-toolbar .x-btn-inner {
+    text-align: left;
+}
+
+.ux-start-menu-toolbar {
+    padding: 4px !important;
+}
+
+/*----------------------------------------------------
+    TaskBar
+*/
+
+/* Use high specificity selector to override default styling*/
+div.ux-taskbar div.x-toolbar {
+    background: transparent none;
+    border: 0 none;
+    padding: 0;
+}
+
+.ux-desktop-windowbar .x-btn-inner,
+.x-nbr .ux-desktop-windowbar .x-btn-icon-text-left button {
+    text-align: left !important;
+}
+
+/*
+    TaskBar (Black)
+*/
+
+.ux-desktop-black .ux-taskbar {
+    background: transparent url('$g.options.images/desktop/taskbar/black/taskbar-start-panel-bg.gif') repeat-x left top;
+    border-color: transparent;
+    /*height: 30px;*/
+}
+
+.ux-desktop-black .ux-taskbar .x-splitter {
+    background: transparent url($g.options.images/desktop/taskbar/black/taskbar-split-h.gif) no-repeat scroll 0 -2px;
+}
+
+.ux-desktop-black .ux-taskbar .x-toolbar-text {
+    color: white !important;
+}
+
+.ux-desktop-black .ux-taskbar .x-btn-default-toolbar-small-over {
+    background-color: yellow;
+}
+
+.ux-desktop-black .ux-taskbar .x-btn-inner {
+    color: white;
+}
+
+.ux-desktop-black .ux-taskbar .x-btn-pressed .x-btn-inner, .ux-taskbar .x-btn-over .x-btn-inner {
+    color: black;
+}
+
+/*----------------------------------------------------
+    Tray Clock
+*/
+
+.ux-desktop-trayclock {
+    text-align: center;
+    vertical-align: middle;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/*----------------------------------------------------
+    Desktop DataView
+*/
+
+.ux-wallpaper {
+    background-color: #3d71b8;
+}
+
+.ux-wallpaper-tiled {
+    background-repeat: repeat;
+}
+
+.ux-desktop-shortcut {
+    cursor: pointer;
+    text-align: center;
+    padding: 8px;
+    margin: 8px;
+    width: 64px;
+}
+
+.ux-desktop-shortcut-icon {
+    width: 48px;
+    height: 48px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+}
+
+.ux-desktop-shortcut-text {
+    font: normal 10px tahoma,arial,verdana,sans-serif;
+    text-decoration: none;
+    padding-top: 5px;
+    color: white;
+}
+
+.x-view-over .ux-desktop-shortcut-text {
+    text-decoration: underline;
+}
+
+
+/*----------------------------------------------------
+    Various icon classes
+*/
+
+.accordion-shortcut {
+    background-image: url($g.options.images/desktop/im48x48.png);
+}
+
+.cpu-shortcut {
+    background-image: url($g.options.images/desktop/statusLarge.png);
+}
+
+.grid-shortcut {
+    background-image: url($g.options.images/desktop/grid48x48.png);
+}
+
+
+.desktop-UseCase {
+    background-image: url($g.options.images/desktop/UseCase48x48.png);
+}
+
+.desktop-Project {
+    background-image: url($g.options.images/desktop/Project48x48.png);
+}
+
+.desktop-CodeEdit {
+    background-image: url($g.options.images/desktop/CodeEdit48x48.png);
+}
+
+.desktop-Doc {
+    background-image: url($g.options.images/desktop/Doc48x48.png);
+}
+
+.desktop-Schedule {
+    background-image: url($g.options.images/desktop/Schedule48x48.png);
+}
+
+.desktop-Account {
+    background-image: url($g.options.images/desktop/Account48x48.png);
+}
+
+.desktop-Server {
+    background-image: url($g.options.images/desktop/Server48x48.png);
+}
+
+.desktop-Solution {
+    background-image: url($g.options.images/desktop/Solution48x48.png);
+}
+
+.desktop-Template {
+    background-image: url($g.options.images/desktop/Template48x48.png);
+}
+
+.notepad-shortcut {
+    background-image: url($g.options.images/desktop/notepadLarge.png);
+    width: 46px;
+    height: 46px;
+}
+
+.x-ie6 .accordion-shortcut {
+    background-image: none;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/im48x48.png', sizingMethod='scale');
+}
+
+.x-ie6 .cpu-shortcut {
+    background-image: none;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/statusLarge.png', sizingMethod='scale');
+}
+
+.x-ie6 .grid-shortcut {
+    background-image: none;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/grid48x48.png', sizingMethod='scale');
+}
+
+.x-ie6 .notepad-shortcut {
+    background-image: none;
+    filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/notepadLarge.png', sizingMethod='scale');
+}
+
+.video {
+    background-image: url($g.options.images/desktop/gears.gif);
+}
+
+.bogus {
+    background-image: url( $g.options.images/desktop/bogus.png ) !important;
+}
+
+.notepad {
+    background-image: url( $g.options.images/desktop/bogus.png ) !important;
+}
+
+.logout {
+    background-image: url( $g.options.images/desktop/logout.gif ) !important;
+}
+
+.settings {
+    background-image: url( $g.options.images/desktop/gears.gif ) !important;
+}
+
+
+.icon-grid {
+    background-image:url( $g.options.images/desktop/grid.png ) !important;
+}
+
+.icon-UseCaseDiagram {
+    background-image:url( $g.options.images/desktop/UseCase16x16.png ) !important;
+}
+
+.icon-Project {
+    background-image:url( $g.options.images/desktop/Project16x16.png ) !important;
+}
+
+.icon-Account {
+    background-image:url( $g.options.images/Account/16x16.png ) !important;
+}
+
+.icon-Server {
+    background-image:url( $g.options.images/Server/16x16.png ) !important;
+}
+
+.icon-Solution {
+    background-image:url( $g.options.images/Solution/16x16.png ) !important;
+}
+
+.icon-Template {
+    background-image:url( $g.options.images/Template/16x16.png ) !important;
+}
+
+.icon-CodeEdit {
+    background-image:url( $g.options.images/desktop/CodeEdit16x16.png ) !important;
+}
+
+.icon-ClassDiagram {
+    background-image:url( $g.options.images/ClassDiagram/16x16.png ) !important;
+}
+
+.icon-UseCaseDiagram {
+    background-image:url( $g.options.images/UseCaseDiagram/16x16.png ) !important;
+}
+
+.icon-Editor {
+    background-image:url( $g.options.images/Editor/16x16.png ) !important;
+}
+
+.add {
+    background-image:url($g.options.images/desktop/icons/fam/add.gif) !important;
+}
+.option {
+    background-image:url($g.options.images/desktop/icons/fam/plugin.gif) !important;
+}
+.remove {
+    background-image:url($g.options.images/desktop/icons/fam/delete.gif) !important;
+}
+.save {
+    background-image:url($g.options.images/desktop/icons/save.gif) !important;
+}
+.accordion {
+    background-image:url($g.options.images/desktop/accordian.gif) !important;
+}
+.tabs {
+    background-image:url($g.options.images/desktop/tabs.gif) !important;
+}
+
+/*----------------------------------------------------
+    IM window icons
+*/
+
+.user {
+    background-image:url( $g.options.images/desktop/icons/fam/user.gif ) !important;
+}
+
+.user-add {
+    background-image:url($g.options.images/desktop/icons/fam/user_add.gif) !important;
+}
+
+.user-delete {
+    background-image:url($g.options.images/desktop/icons/fam/user_delete.gif) !important;
+}
+
+.connect {
+    background-image:url($g.options.images/desktop/icons/fam/connect.gif) !important;
+}
+
+.user-girl {
+    background-image:url($g.options.images/desktop/icons/fam/user_female.gif) !important;
+}
+
+.user-kid {
+    background-image:url($g.options.images/desktop/icons/fam/user_green.gif) !important;
+}
+
+.user-suit {
+    background-image:url($g.options.images/desktop/icons/fam/user_suit.gif) !important;
+}
+
+/**end desktop css**/
+
+.msg .x-box-mc {
+    font-size:14px;
+}
+#msg-div {
+    position:absolute;
+    left:50%;
+    top:10px;
+    width:400px;
+    margin-left:-200px;
+    z-index:20000;
+}
+#msg-div .msg {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #F6F6F6;
+    border: 2px solid #ccc;
+    margin-top: 2px;
+    padding: 10px 15px;
+    color: #555;
+}
+#msg-div .msg h3 {
+    margin: 0 0 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+#msg-div .msg p {
+    margin: 0;
+}

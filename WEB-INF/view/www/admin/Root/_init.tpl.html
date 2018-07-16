@@ -1,0 +1,17 @@
+#if($Support.env().isDebug())
+<link href="$Support.env().get('ext_url')/resources/css/ext-all-neptune-debug.css" rel="stylesheet" ></link>
+<script src="$Support.env().get('ext_url')/ext-all-debug.js" ></script>
+<script src="$Support.env().get('ext_url')/locale/ext-lang-en.js"></script>
+#else
+<link href="$Support.env().get('ext_url')/resources/css/ext-all-neptune.css" rel="stylesheet" />
+<script src="$Support.env().get('ext_url')/ext-all.js" ></script>
+<script src="$Support.env().get('ext_url')/locale/ext-lang-en.js"></script>
+#end
+
+<link rel="stylesheet" type="text/css" href="/resource/www/admin/css/App.css" ></link>
+<script src="/resource/www/admin/js/Ajax-ext.js"></script>
+<script src="/resource/www/admin/js/ActiveRecord-ext.js"></script>
+<script src="/resource/www/admin/js/Query-ext.js"></script>
+<script src="/resource/www/admin/js/Locale-default.js"></script>
+<script src="/resource/www/admin/js/App.js"></script>
+

@@ -1,0 +1,80 @@
+formats:
+  datetime: 'yyyy-MM-dd HH:mm:ss'
+  date: 'yyyy-MM-dd'
+  time: 'HH:mm:ss'
+  
+common: 
+  unknown_status: '未知状态!'
+  query_failure: '查询失败!'
+  create_failure: '创建失败!'
+  update_failure: '更新失败!'
+  remove_failure: '删除失败!'
+ 
+view: 
+  general: General
+  advanced: Advanced
+  index: Index
+  list: List
+  new: New
+  edit: Edit
+  save: Save
+  remove: Remove 
+  saveing: Saveing...
+  removing: Removing...
+  search: Search
+  searching: Searching...
+  please_select: Please select
+  logout: Logout
+  
+  
+errors: 
+  ALL: 
+    ALL:
+      type:
+        message: "{0}{1}数据类型错误"
+      uniqueness:
+        message: "{0}{1}已经存在"
+      number: 
+        greater_than: "{0}{1}必须大于{3}"
+        greater_than_or_equal_to: "{0}{1}必须大于或等于{3}"
+        equal_to: "{0}{1}必须等于{3}"
+        less_than: "{0}{1}必须小于{3}"
+        less_than_or_equal_to: "{0}{1}必须小于或等于{3}"
+        odd: "{0}{1}必须是奇数"
+        even: "{0}{1}必须是偶数"
+      presence: 
+        message: "{0}{1}不能为空"
+      length:
+        is: "{0}{1}没符合(应该是{3}个字符)"
+        minimum: "{0}{1}太短(最短为{3}个字符)"
+        maximum: "{0}{1}太长(最长为{3}个字符)"
+        within: "{0}{1}必须在这范围{3}"
+      inclusion:
+        in: "{0}{1}不包括在列表中"
+      format:
+        with:  "{0}{1}没符合规则"
+      exclusion: 
+        in: "{0}{1}被保留"
+      date: 
+        is: "{0}{1}必须是{3}"
+        minimum: "{0}{1}太小(最小为{3})"
+        maximum: "{0}{1}太大(最大为{3})"
+        within: "{0}{1}必须在这范围{3}"
+      timestamp:
+        is: "{0}{1}必须是{3}"
+        minimum: "{0}{1}太小(最小为{3})"
+        maximum: "{0}{1}太大(最大为{3})"
+        within: "{0}{1}必须在这范围{3}"
+      time: 
+        is: "{0}{1}必须是{3}"
+        minimum: "{0}{1}太小(最小为{3})"
+        maximum: "{0}{1}太大(最大为{3})"
+        within: "{0}{1}必须在这范围{3}"
+        
+         
+models: 
+  Product: Product
+attributes: 
+  Product: 
+    code: Code
+    name: Name
