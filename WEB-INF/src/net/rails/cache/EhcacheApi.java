@@ -7,11 +7,7 @@ import net.sf.ehcache.Element;
 import net.sf.ehcache.config.Configuration;
 import net.sf.ehcache.config.DiskStoreConfiguration;
 
-/**
- * Support ehcache-core-2.6.0.jar JDK 1.6 above
- * @author Jack
- *
- */
+
 public final class EhcacheApi extends AbsCacheApi {
 	
 	private CacheManager cm;
@@ -27,12 +23,6 @@ public final class EhcacheApi extends AbsCacheApi {
 		cm = CacheManager.create(conf);
 	}
 
-	/**
-	 * 
-	 * @param name
-	 * @param value
-	 * @param live  -1 longtime,0 no cache, >= 1 live time rage
-	 */
 	@Override
 	public synchronized void set(String name,Object value,int live){
 		int t = 0;

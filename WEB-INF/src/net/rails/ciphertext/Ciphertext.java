@@ -29,17 +29,10 @@ import javax.crypto.spec.SecretKeySpec;
 import net.rails.ciphertext.exception.CiphertextException;
 import net.rails.support.Support;
 
-/**
- * Cipher class includes Base64/DES/3DES/RSA.
- * @author Jack
- *
- */
+
 @SuppressWarnings("static-access")
 public class Ciphertext {
 	
-	/**
-	 * Includes Base64Worker.encode(bytes) and Base64Worker.decode(text).
-	 */
 	public final static class Base64Worker {
 		
 		public static String encode(byte[] binaryData){
@@ -51,12 +44,6 @@ public class Ciphertext {
 		}
 	}
 
-	/**
-	 * DES Worker Class.
-	 * key and iv length only is 8 bit. 
-	 * @author Jack
-	 *
-	 */
 	public final static class DESWorker {
 		private DESKeySpec keySpec;
 		private AlgorithmParameterSpec iv;
@@ -164,11 +151,6 @@ public class Ciphertext {
 		}
 	}
 	
-	/**
-	 * AES Cipher
-	 * @author Jack
-	 *
-	 */
 	public final static class AESWorker {
 
 		private KeyGenerator generator;
@@ -221,11 +203,6 @@ public class Ciphertext {
 		}
 	}
 	
-	/**
-	 * RSA Cipher
-	 * @author Jack
-	 *
-	 */
 	public final static class RSAWorker {
 
 		public static String ALOGRITHM = "RSA";

@@ -9,11 +9,7 @@ import net.rails.active_record.ActiveRecord;
 import net.rails.active_record.Adapter;
 import net.rails.sql.Sql;
 
-/**
- * DELETE语句生成类
- * @author Jack
- *
- */
+
 public final class DestroyWorker extends AbsWorker implements Cloneable{
 	
 	private final List<String> wheres = new ArrayList<String>();
@@ -53,18 +49,10 @@ public final class DestroyWorker extends AbsWorker implements Cloneable{
 		return sbf;
 	}
 	
-	/**
-	 * 执行此次删除语句。
-	 * @return 受影响行数
-	 * @throws SQLException
-	 */
 	public int execute() throws SQLException{
 		return adapter.execute(Sql.sql(getSql(),params));
 	}
 	
-	/**
-	 * 获取DELETE语句。
-	 */
 	@Override
 	public String getSql() {
 		final StringBuffer where = createWheres();

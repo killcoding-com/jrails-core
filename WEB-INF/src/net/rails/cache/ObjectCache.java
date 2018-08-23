@@ -6,11 +6,6 @@ import java.util.List;
 
 import net.rails.support.Support;
 
-/**
- * 对象缓存管理类
- * @author Jack
- *
- */
 public abstract class ObjectCache {
 
 	private Object object;

@@ -29,26 +29,14 @@ public abstract class AbsWorker{
 		this.params.putAll(params);
 	}
 	
-	/**
-	 * 获取参数
-	 * @return
-	 */
 	public Map<String,Object> params(){
 		return params;
 	}
 	
-	/**
-	 * 获取适配器。
-	 * @return
-	 */
 	public Adapter getAdapter(){
 		return adapter;
 	}
 	
-	/**
-	 * 获取ActiveRecord
-	 * @return
-	 */
 	public ActiveRecord getRecord(){
 		return record;
 	}

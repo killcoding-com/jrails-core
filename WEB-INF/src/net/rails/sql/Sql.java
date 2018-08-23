@@ -12,11 +12,6 @@ import net.rails.sql.worker.HasWorker;
 import net.rails.sql.worker.SqlWorker;
 import net.rails.sql.worker.UpdateWorker;
 
-/**
- * SQL Base Class
- * @author Jack
- *
- */
 public final class Sql {
 	
 	public static Query query(ActiveRecord from){

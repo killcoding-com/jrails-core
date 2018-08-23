@@ -10,29 +10,15 @@ import net.rails.active_record.ActiveRecord;
 import net.rails.active_record.validate.TypeException;
 import net.rails.support.Support;
 
-/**
- * INSERT SQL语句工人。
- * @author Jack
- *
- */
 public final class CreateWorker extends AbsWorker implements Cloneable{
 	
 	private Logger log = LoggerFactory.getLogger(CreateWorker.class);
 	
-	/**
-	 * 构造方法。
-	 * @param record
-	 */
 	public CreateWorker(ActiveRecord record) {
 		super(record);
 		this.adapter = record.getWriterAdapter();
 	}
 	
-	/**
-	 * 构造方法。
-	 * @param record
-	 * @param params
-	 */
 	public CreateWorker(ActiveRecord record,Map<String,Object> params) {
 		super(record,params);
 		this.adapter = record.getWriterAdapter();
@@ -47,9 +33,6 @@ public final class CreateWorker extends AbsWorker implements Cloneable{
 		return c;
 	}
 
-	/**
-	 * 获取一个INSERT语句。
-	 */
 	@Override
 	public String getSql() {
 		List<String> columns = adapter.getColumnNames();

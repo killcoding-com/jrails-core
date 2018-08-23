@@ -11,13 +11,13 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.io.FileUtils;
 
-// import app.model.Account;
 import net.rails.active_record.DBResource;
 import net.rails.ciphertext.Ciphertext;
 import net.rails.ciphertext.Ciphertext.DESWorker;
 import net.rails.ciphertext.Ciphertext.ThreeDESWorker;
 import net.rails.ciphertext.exception.CiphertextException;
 import net.rails.ext.AbsGlobal;
+import net.rails.sql.query.Query;
 import net.rails.support.Support;
 //import net.rails.log.Log;
 import net.rails.tpl.Tpl;
@@ -25,8 +25,12 @@ import net.rails.tpl.TplText;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import app.model.Product;
 
-public class TplTest 
+/**
+ * Unit test for simple App.
+ */
+public class AdapterTest 
     extends TestCase
 {
 	public static AbsGlobal g;
@@ -35,23 +39,31 @@ public class TplTest
 		g = new GlobalUnit();
 	}
 	
-    public TplTest( String testName )
+    public AdapterTest( String testName )
     {
         super( testName );
     }
 
     public static Test suite()
     {
-        return new TestSuite( TplTest.class );
+        return new TestSuite( AdapterTest.class );
     }
-
-    public void testChinese() throws IOException
+    
+    public void testCacheForQuery() throws IOException
     {
     	try{
         	g.setLocale("default");
-        	TplText text = new TplText("chinese", g,"chinese.tpl.html");
-        	Tpl tpl = new Tpl(g,text);
-        	System.out.println(tpl.generate());
+        	for(int i = 0;i < 10000;i++){
+        		try{
+            		Query q = new Query(new Product(g)); 
+            		q.and("eq_deleted",false);
+            		q.cache(2);
+                	Product a = q.first();
+                // 	System.out.println(a);
+        		}catch(Exception e){
+        			e.printStackTrace();
+        		}
+        	}
             assertTrue( true );
     	}catch(Exception e){
     		e.printStackTrace();

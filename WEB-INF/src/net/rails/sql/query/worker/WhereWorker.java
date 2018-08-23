@@ -319,8 +319,6 @@ public class WhereWorker {
 		if(!groups.contains(g))
 			groups.add(g);
 	}	
-	
-	/**shar methods**/
 
 	public void skipnil(boolean a){
 		this.skipnil = a;

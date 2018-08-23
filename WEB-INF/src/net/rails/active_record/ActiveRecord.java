@@ -37,12 +37,6 @@ import net.rails.sql.worker.SqlWorker;
 import net.rails.sql.worker.UpdateWorker;
 import net.rails.support.Support;
 
-/**
- * Mapping for database records.
- * <h5>Defaults:</h5>
- * <p>Sub class only in package "app.model".</p>
- * <p>Sub class name example: (e.g. table_name --> TableName).</p>
- */
 @SuppressWarnings("serial")
 public abstract class ActiveRecord extends IndexMap<String, Object> implements Cloneable, java.io.Serializable {
 	
@@ -58,10 +52,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	protected AbsGlobal g;
 	protected Logger log;
 	
-    /**
-     * Construct an ActiveRecord object.
-     * @param g
-     */
 	public ActiveRecord(AbsGlobal g) {
 		super();
 		log = LoggerFactory.getLogger(getClass());
@@ -70,13 +60,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		initAdapter();
 	}
 
-	/**
-	 * Construct an ActiveRecord object from table a record.
-	 * @param g
-	 * @param id The record id.
-	 * @throws SQLException
-	 * @throws RecordNotFoundException Table no exist record.
-	 */
 	public ActiveRecord(AbsGlobal g, Object id) throws SQLException,
 			RecordNotFoundException {
 		super();
@@ -87,14 +70,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		find(id);
 	}
 
-	//Begin protected methods
-	/**
-	 * Validate the object attributes values.
-	 * @param on See the class defines ActiveRecord.ON_SAVE、ActiveRecord.ON_CREATE、ActiveRecord.ON_UPDATE.
-	 * @param values Mapping keys and names.
-	 * @throws ConfigurException Load failure in config/models/*.yml.
-	 * @throws MessagesException Validate results.
-	 */
 	protected void messages(String on, Map<String, Object> values)
 			throws ConfigurException, MessagesException {		
 		List<String> list = new ArrayList<String>();
@@ -141,16 +116,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	}
 
 
-
-	/**
-	 * Attributes validates
-	 * @param on values only is ActiveRecord.ON_SAVE,ActiveRecord.ON_CREATE,ActiveRecord.ON_UPDATE
-	 * @param values 验证内容
-	 * @param attrs 验证属性
-	 * @throws ValidateException 数据验证失败抛出
-	 * @throws ConfigurException 配置内容错误抛出
-	 * @throws TypeException 数据类型错误抛出
-	 */
 	protected void validates(String on, Map<String, Object> values,
 			List<String> attrs) throws ValidateException, ConfigurException,
 			TypeException {
@@ -186,13 +151,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		}
 	}
 
-
-	
-	/**
-	 * 重写这方法将可改变查询结果的值。
-	 * @param map 单行数据
-	 * @return
-	 */
 	protected Map<String,Object> findFilter(Map<String, Object> map){		
 		return map;
 	}
@@ -318,13 +276,7 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 			return clearValue(attr);
 		}
 	}
-	//End protected methods
-	
-	//Begin public methods
-	/**
-	 * Clone all values of the same active record(NonuseTransaction).
-	 * @return New ActiveRecord object.
-	 */
+
 	@Override
 	public ActiveRecord clone() {
 		try {
@@ -341,85 +293,32 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		}
 	}
 	
-	/**
-	 * Validate attributes input value.
-	 * <p><b>Defaults:</b></P>
-	 * <p>values: Current attribute values.</p>
-	 * @param on See the class defines ActiveRecord.ON_SAVE、ActiveRecord.ON_CREATE、ActiveRecord.ON_UPDATE.
-	 * @throws ConfigurException Load failure in config/models/*.yml .
-	 * @throws MessagesException Validate failed.
-	 */
 	public void messages(String on) throws ConfigurException, MessagesException {
 		messages(on, this);
 	}
-	
-	/**
-	 * Validate attributes input value.
-	 * <p><b>Defaults:</b></P>
-	 * <p>on: ON_SAVE.</p>
-	 * <p>values: Current attribute values.</p>
-	 * @throws ConfigurException Load failure in config/models/*.yml .
-	 * @throws MessagesException Validate failed.
-	 */
+
 	public void messages() throws ConfigurException, MessagesException {
 		messages(ON_SAVE, this);
 	}
 
-	/**
-	 * Save changed.
-	 * @return Return true if successful save else return false.
-	 * @throws ConfigurException Load failure in config/models/*.yml .
-	 * @throws MessagesException Validate failed.
-	 * @throws SQLException
-	 * @throws ValidateException Input values validate failed.
-	 * @throws TypeException Input values data type failed.
-	 */
 	public boolean onSave() throws ConfigurException, MessagesException,
 			SQLException, ValidateException, TypeException {
 		messages(saveAction, this);
 		return save();
 	}
 
-	/**
-	 * <p>Execute SQL "INSERT INTO ...".</p>
-	 * <p>Validate by "config/models/modelName.yml".</p>
-	 * @return Success return true else return false.
-	 * @throws ConfigurException Load yml failed.
-	 * @throws MessagesException Validate all values failed.
-	 * @throws SQLException
-	 * @throws ValidateException Validate first value failed.
-	 * @throws TypeException Attribyte data type failed.
-	 */
 	public boolean onCreate() throws ConfigurException, MessagesException, SQLException, ValidateException, TypeException {
 		saveAction = ON_CREATE;
 		messages(ON_CREATE, this);
 		return save();
 	}
 
-	/**
-	 * Execute update the record, trigger validate on after update.
-	 * Validate spec define in config/models/modelName.yml.
-	 * @return Return true on success, else false. 
-	 * @throws ConfigurException Validate config invalid.
-	 * @throws MessagesException For each attributes validate error messages.
-	 * @throws SQLException Connection or execute sql invalid
-	 * @throws ValidateException Record invalid.
-	 * @throws TypeException Attributes data type invalid. 
-	 */
 	public boolean onUpdate() throws ConfigurException, MessagesException, SQLException, ValidateException, TypeException {
 		saveAction = ON_UPDATE;
 		messages(ON_UPDATE, this);
 		return save();
 	}
 	
-	/**
-	 * 插入或者更新数据。
-	 * @return 执行成功返回true否则返回false
-	 * @throws SQLException
-	 * @throws ValidateException 数据验证失败抛出
-	 * @throws ConfigurException 配置内容错误抛出
-	 * @throws TypeException 数据类型错误抛出
-	 */
 	public boolean save() throws SQLException, ValidateException,
 			ConfigurException, TypeException {
 		if (saveAction.equals(ON_CREATE))
@@ -428,14 +327,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 			return update();
 	}
 
-	/**
-	 * 执行插入数据。
-	 * @return 执行成功返回true否则返回false
-	 * @throws SQLException
-	 * @throws ValidateException 数据验证失败抛出
-	 * @throws ConfigurException 配置内容错误抛出
-	 * @throws TypeException 数据类型错误抛出
-	 */
 	public boolean create() throws SQLException, ValidateException,
 			ConfigurException, TypeException {
 		List<String> attrs = getAttributes();
@@ -478,16 +369,7 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 			return false;
 	}
 
-	
-	/**
-	 * 执行更新数据。
-	 * @return 执行成功返回true否则返回false
-	 * @throws SQLException
-	 * @throws ValidateException 数据验证失败抛出
-	 * @throws ConfigurException 配置内容错误抛出
-	 * @throws TypeException 数据类型错误抛出
-	 */
-	public boolean update() throws SQLException, ValidateException,
+    public boolean update() throws SQLException, ValidateException,
 			ConfigurException, TypeException {
 		if(beforeUpdate()){
 			List<String> keys = Support.map(this).keys();
@@ -567,29 +449,14 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		}
 	}
 	
-	/**
-	 * 保存触发器
-	 * @param newValue
-	 * @param oldValue
-	 */
 	protected Object saveTrigger(String attr,Object newValue,Object oldValue){
 		return newValue;
 	}
 	
-	/**
-	 * 创建触发器
-	 * @param newValue
-	 * @param oldValue
-	 */
 	protected Object createTrigger(String attr,Object newValue){
 		return newValue;
 	}
 	
-	/**
-	 * 更新触发器
-	 * @param newValue
-	 * @param oldValue
-	 */
 	protected Object updateTrigger(String attr,Object newValue,Object oldValue){
 		return newValue;
 	}
@@ -625,10 +492,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		
 	}
 
-	/**
-	 * 获取config/models/modelName.yml,dependent配置内容
-	 * @return List<Map<String,Object>>
-	 */
 	public List<Map<String,Object>> getDelete() {
 		return Support.config().getDelete().get(getClass().getSimpleName());
 	}
@@ -637,13 +500,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return Support.config().getDestroy().get(getClass().getSimpleName());
 	}
 
-
-	/**
-	 * 物理删除数据；
-	 * 若config/models/Model.yml配置了dependent内容，将会引起循环去处理依赖模型。
-	 * @return 执行成功返回true否则返回false
-	 * @throws Exception
-	 */
 	public boolean destroy() throws Exception {
 		boolean b = false;
 		if(beforeDestroy()){
@@ -660,12 +516,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return b;
 	}
 
-	/**
-	 * 软删除方法，将deleted字段标识成true状态；
-	 * 若config/models/modelName.yml配置了dependent内容，将会引起循环去处理依赖模型。
-	 * @return 执行成功返回true否则返回false
-	 * @throws Exception
-	 */
 	public boolean delete() throws Exception {
 		boolean b = false;
 		if(containsKey("deleted") && isBoolean("deleted"))
@@ -685,12 +535,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return b;
 	}
 
-	/**
-	 * 查询关联对象列表(一对一关系)，child.belongsTo(parent) 将返回一个parent；
-	 * @param t ActiveRecord关联模型
-	 * @return <T extends ActiveRecord> T 关联模型实例
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> T belongsTo(T t) throws SQLException {
 		log.debug("belongsTo : {}",t.getClass().getSimpleName());
 		HasWorker has = Sql.has();
@@ -698,12 +542,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return q.first();
 	}
 	
-	/**
-	 * 查询关联对象列表(一对一关系)，child.belongsTo(parent) 将返回一个parent
-	 * @param hasName 自定义名称，配置文件必须指定 classify
-	 * @return
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> T belongsTo(String belongName) throws SQLException {
 		log.debug("belongsTo : {}",belongName);
 		HasWorker has = Sql.has();
@@ -712,12 +550,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	}
 
 
-	/**
-	 * 查询关联对象列表(一对一关系)，例如： parent.hasOne(child) 这方法将返回一个child
-	 * @param t ActiveRecord关联模型
-	 * @return <T extends ActiveRecord> T 关联模型实例
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> T hasOne(T t) throws SQLException {
 		log.debug("hasOne : {}",t.getClass().getSimpleName());
 		HasWorker has = Sql.has();
@@ -725,12 +557,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return q.first();
 	}
 
-	/**
-	 * 查询关联对象列表(一对一关系)，例如： parent.hasOne(child) 这方法将返回一个child
-	 * @param hasName 自定义名称，配置文件必须指定 classify
-	 * @return
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> T hasOne(String hasName) throws SQLException {
 		log.debug("hasOne : {}",hasName);
 		HasWorker has = Sql.has();
@@ -738,12 +564,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return q.first();
 	}
 	
-	/**
-	 * 查询关联对象列表(一对一关系)，例如： parent.hasMany(child) 这方法将返回多个child
-	 * @param t ActiveRecord 关联模型
-	 * @return <T extends ActiveRecord> List<T> 关联模型实例
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> List<T> hasMany(T t) throws SQLException {
 		log.debug("hasMany : {}",t.getClass().getSimpleName());
 		HasWorker has = Sql.has();
@@ -751,12 +571,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return q.find();
 	}
 
-	/**
-	 * 查询关联对象列表(一对一关系)，例如： parent.hasMany(child) 这方法将返回多个child
-	 * @param hasName 自定义名称，配置文件必须指定 classify
-	 * @return <T extends ActiveRecord> List<T> 关联模型实例
-	 * @throws SQLException
-	 */
 	public <T extends ActiveRecord> List<T> hasMany(String hasName) throws SQLException {
 		log.debug("hasName : {}",hasName);
 		HasWorker has = Sql.has();
@@ -764,55 +578,26 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return q.find();
 	}
 
-	/**
-	 * 执行查询重新刷新值。
-	 * @throws SQLException
-	 * @throws RecordNotFoundException 
-	 */
 	public void refresh() throws SQLException, RecordNotFoundException {
 		find(getId());
 	}
 
-	/**
-	 * 获取模型的属性列表。
-	 * @return List<String>
-	 */
 	public List<String> getAttributes() {
 		return readerAdapter.getColumnNames();
 	}
 
-	/**
-	 * 获取一个属性。
-	 * @param name 属性名称
-	 * @return Attribute
-	 * @throws TypeException
-	 */
 	public Attribute getAttribute(String name) throws TypeException {
 		return new Attribute(this, name);
 	}
 
-	/**
-	 * 如果你的config/database.yml文件是配置了读写分离，这方法可获取读数据时的数据库适配器；
-	 * 若没有读写分离配置则返回标准的数据库适配器。
-	 * @return Adapter
-	 */
 	public Adapter getReaderAdapter() {
 		return readerAdapter;
 	}
 
-	/**
-	 * 如果你的config/database.yml文件是配置了读写分离，这方法可获取写数据时的数据库适配器；
-	 * 若没有读写分离配置则返回标准的数据库适配器。
-	 * @return Adapter
-	 */
 	public Adapter getWriterAdapter() {
 		return writerAdapter;
 	}
 
-	/**
-	 * 获取一个全局配置对像。
-	 * @return AbsGlobal
-	 */
 	public AbsGlobal getGlobal() {
 		return g;
 	}
@@ -1020,42 +805,22 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return get(attr) instanceof BigDecimal ? (BigDecimal) get(attr) : new BigDecimal(get(attr).toString().trim());
 	}
 	
-	/**
-	 * 设置调用save方法时应该执行的动作。
-	 * @param saveAction
-	 */
 	public void setSaveAction(String saveAction) {
 		this.saveAction = saveAction;
 	}
 	
-	/**
-	 * 获取调用save方法时应该执行的动作。
-	 * @return String
-	 */
 	public String getSaveAction() {
 		return saveAction;
 	}
 
-	/**
-	 * 获取记录find(id)的单个查询结果。
-	 * @return Map<String, Object>
-	 */
 	public Map<String, Object> getBeforeRecord() {
 		return beforeRecord;
 	}
-	
-	/**
-	 * 获取被更新值Map。
-	 * @return Map<String,Object>
-	 */
+
 	public Map<String,Object> getUpdateValues(){
 		return updateValues;
 	}
 
-	/**
-	 * 用作记录查询结果用作更新值比较，通常用在框架内部。
-	 * @param m 单个查询结果
-	 */
 	public void putAllFindRecord(Map<String, Object> m) {
 		beforeRecord = new IndexMap<String, Object>();
 		final List<String> attrs = getAttributes();
@@ -1090,15 +855,7 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	public void rollback(){
 		writerAdapter.rollback();
 	}
-	//End public methods
-	
-	//Begin static methods
-	/**
-	 * Construct a defalut ActiveRecord of table name.
-	 * @param g is a AbsGlobal extend object.
-	 * @param table Table name.
-	 * @return ActiveRecord object.
-	 */
+
 	public static ActiveRecord eval(AbsGlobal g,String table){
 		try{
 			Class cls = Class.forName("app.model." + Support.inflect(table).camelcase());
@@ -1110,14 +867,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		}
 	}
 	
-	/**
-	 * Construct a query result of ActiveRecord.
-	 * <p><b>Run script:</b> SELECT * FROM table_name WHERE id = 'params id'.</p>
-	 * @param g is a AbsGlobal extend object.
-	 * @param table Table name.
-	 * @param id of data record.
-	 * @return ActiveRecord object.
-	 */
 	public static ActiveRecord eval(AbsGlobal g,String table,Object id){
 		try{
 			Class cls = Class.forName("app.model." + Support.inflect(table).camelcase());
@@ -1129,12 +878,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		}
 	}
 
-	/**
-	 * Execute "Select sql" function.
-	 * @param t is a ActiveRecord of sub class object.
-	 * @param sql SqlWorker object.
-	 * @return List<T>.
-	 */ 
 	@SuppressWarnings("unchecked")
 	public static <T extends ActiveRecord> List<T> find(T t, SqlWorker sql)
 			throws SQLException {
@@ -1152,12 +895,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return list;
 	}
 	
-	/**
-	 * Execute "Select sql" function.
-	 * @param t is an ActiveRecord of sub class object.
-	 * @param worker FindWorker.
-	 * @return List<T>.
-	 */ 
 	public static <T extends ActiveRecord> List<T> find(T t, FindWorker worker)
 			throws SQLException {
 		SqlWorker sql = Sql.sql(worker.getSql(), worker.params());
@@ -1168,12 +905,6 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 		return find(t, sql);
 	}
 
-	/**
-	 * Execute "Select sql" function.
-	 * @param t is an ActiveRecord of sub class object.
-	 * @param worker FindWorker
-	 * @return T.
-	 */
 	public static <T extends ActiveRecord> T first(T t, FindWorker worker)
 			throws SQLException {		
 		SqlWorker sql = Sql.sql(worker.getSql(), worker.params());
@@ -1194,11 +925,5 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	public static <T extends ActiveRecord> int[] createBatch(List<T> batchs) throws SQLException {		
 		return batchs.get(0).getWriterAdapter().create(batchs);
 	}
-	
-    //End static methods
-	
-	//Begin private methods
-
-	//End private methods
 	
 }

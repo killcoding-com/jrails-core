@@ -143,8 +143,6 @@ public abstract class Controller {
 		}
 	}
 
-	/** 以下是私有方法 **/
-
 	private void parseFormField(String fieldName, FileItemStream item)
 			throws IOException {
 		InputStream stream = item.openStream();

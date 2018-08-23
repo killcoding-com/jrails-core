@@ -1,41 +1,17 @@
 root: 
   controller: Root
   action: index
-  params: 
-    _ARGS: admin
 
-admin:
-  controller: Root
-  action: index
-  params:
-    _ARGS: admin
+# sample: 
+#   controller: Sample
+#   action: index
+#   params: 
+#     param1: value1
   
-resource:
-  controller: Resource 
-  action: include
-
-install: 
-  controller: Install
-  action: install
-  params: 
-    _ARGS: admin
-      
-login: 
-  controller: Security
-  action: login
-  params: 
-    _ARGS: admin
-    
-logout: 
-  controller: Security
-  action: logout
-  params: 
-    _ARGS: admin
   
-security: 
-  controller: Security
-  action: index
-  params: 
-    _ARGS: admin
-    
-domain_route: ~
+# domain_route: 
+#   'your.domain.com': 
+#     container: YourDomain
+#     action: index
+#     params:
+#       param1: value1

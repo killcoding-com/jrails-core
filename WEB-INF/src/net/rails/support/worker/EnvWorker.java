@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.rails.support.Support;
+import java.io.File;
+import org.apache.commons.io.FileUtils;
 
 @SuppressWarnings("unchecked")
 public final class EnvWorker {
@@ -110,6 +112,17 @@ public final class EnvWorker {
 
 	public String getHostname() {
 		String hostname = System.getenv().get("HOSTNAME");
+		try{
+    		File hostnameFile = new File("/etc/hostname");
+    		if(hostnameFile.exists()){
+    		    hostname = FileUtils.readFileToString(hostnameFile);
+    		    if(hostname != null){
+    		        hostname = hostname.trim();
+    		    }
+    		}
+		}catch(Exception e){
+		    log.error(e.getMessage(), e);
+		}
 		if (hostname == null) {
 			try {
 				InetAddress addr;

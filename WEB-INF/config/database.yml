@@ -5,10 +5,10 @@ MySql:
   driver: com.mysql.jdbc.Driver
   url: "jdbc:mysql://localhost:3306/appdb?characterEncoding=utf8"
   username: dbappuser
-  password: fk31dg
+  password: 1m2ry3
   quote: `keyword`
   schema: appdb
-  formats: 
+  formats:  
     datetime: "yyyy-MM-dd HH:mm:ss.SSS"
     date: yyyy-MM-dd
     time: "HH:mm:ss.SSS"

@@ -42,10 +42,6 @@ public final class StringWorker {
 		return s;
 	}
 	
-	/**
-	 * 尾字母大写。
-	 * @return
-	 */
 	public String lastUpCase(){
 		if(blank())
 			return source;

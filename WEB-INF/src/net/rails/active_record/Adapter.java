@@ -136,8 +136,6 @@ public class Adapter {
 		}
 		List<Map<String, Object>> list = null;
 		if(Cache.included(cacheName)){
-			log.info("Find SQL By Cache: {}",sql.getSql());
-			log.info("SQL Params: {}",sql.getParams());
 			list = (List<Map<String, Object>>) Cache.get(cacheName);
 			if(list == null){
 				list =  findSql(sql);
@@ -157,12 +155,15 @@ public class Adapter {
 				return list;
 			}
 		}else{
-			list = findSql(sql);
+		    list = findSql(sql);
+		    if(sql.isCached()){
+		      Cache.set(cacheName,list,sql.getCacheSecond());
+		    }
 			return list;
 		}
 	}
 	
-	public List<Map<String,Object>> find(SqlWorker sql) throws SQLException{		
+	public List<Map<String,Object>> find(SqlWorker sql) throws SQLException{	
 		if(sql.isCached()){
 			return syncFind(sql);
 		}else
