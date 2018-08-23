@@ -9,13 +9,14 @@ import net.rails.support.Support;
 
 public final class UserAgentWorker {
 	
-	public final static List<String> Mobiles = Arrays.asList(Families.Android,Families.Windows_Phone,Families.iPhone,Families.Symbian);
+	public final static List<String> Mobiles = Arrays.asList(Families.iPad,Families.Android,Families.Windows_Phone,Families.iPhone,Families.Symbian);
 	
 	public static class Families {
 		public final static String Windows = "Windows";
 		public final static String Windows_Phone = "Windows Phone";
 		public final static String Android = "Android";
 		public final static String iPhone = "iPhone";
+		public final static String iPad = "iPad";
 		public final static String Mac = "Mac";
 		public final static String Symbian = "Symbian";
 		public final static String Linux = "Linux"; 
@@ -123,26 +124,36 @@ enum UAToken {
 			"Windows.version # (?<=(Windows (Phone|XP|NT|CE|ME|2000|98|95|8|7) ))(\\d+[_.]{0,1}\\d+){0,1}",
 			"Windows Phone.group # Windows Phone(?=( \\d+[_.]{0,1}\\d+))",
 			"Windows Phone.name # Windows Phone( \\d+[_.]{0,1}\\d+){0,1}",
-			"Windows Phone.version # (?<=(Windows Phone ))(\\d+[_.]{0,1}\\d+)",			
+			"Windows Phone.version # (?<=(Windows Phone ))(\\d+[_.]{0,1}\\d+)",	
+			
 			"Linux.group # Linux x86(?=_64)",
 			"Linux.name # Linux x86(_64)",
 			"Linux.group # Linux x86(?=_32)",
 			"Linux.name # Linux x86(_32)",
 			"Linux.group # Linux i(?=(586|686))",
 			"Linux.name # Linux i(586|686)",
-			"Linux.version # (?<=(Linux i))(586|686)",			
+			"Linux.version # (?<=(Linux i))(586|686)",
+			
 			"Android.group # Android(?=([ ]\\d+[_.]{0,1}\\d+))",
 			"Android.name # Android([ ]\\d+[_.]{0,1}\\d+)",
 			"Android.version # (?<=(Android ))(\\d+[_.]{0,1}\\d+)",
+
+			"iPad.group # iPad(?=(;))",
+			"iPad.name # OS([ ]\\d+[_.]{0,1}\\d+)",
+			"iPad.version # (?<=(OS ))(\\d+[_.]{0,1}\\d+)",
+			
 			"iPhone.group # iPhone OS(?=([ ]\\d+[_.]{0,1}\\d+))",
 			"iPhone.name # iPhone OS([ ]\\d+[_.]{0,1}\\d+)",
+			
 			"iPhone.version # (?<=(iPh OS ))(\\d+[_.]{0,1}\\d+)",
 			"iPhone.group # iPh OS(?=([ ]\\d+[_.]{0,1}\\d+))",
 			"iPhone.name # iPh OS([ ]\\d+[_.]{0,1}\\d+)",
 			"iPhone.version # (?<=(iPhone OS ))(\\d+[_.]{0,1}\\d+)",
+			
 			"Mac.group # Mac OS X(?=([ ]\\d+[_.]{0,1}\\d+))",
 			"Mac.name # Mac OS X([ ]\\d+[_.]{0,1}\\d+)",
 			"Mac.version # (?<=(Mac OS X ))(\\d+[_.]{0,1}\\d+)",
+			
 			"Symbian.group # SymbianOS(?=(/\\d+[_.]{0,1}\\d+))",
 			"Symbian.name # SymbianOS(/\\d+[_.]{0,1}\\d+)",
 			"Symbian.version # (?<=(SymbianOS/))(\\d+[_.]{0,1}\\d+)"
@@ -151,37 +162,50 @@ enum UAToken {
 			"Trident.group # Trident(?=(/\\d+[_.]{0,1}\\d+))",
 			"Trident.name # Trident/\\d+[_.]{0,1}\\d+",
 			"Trident.version # (?<=Trident/)\\d+[_.]{0,1}\\d+",
+			
 			"WebKit.group # AppleWeb[Kk]it(?=(/\\d+[_.]{0,1}\\d))",
 			"WebKit.name # AppleWeb[Kk]it(/\\d+[_.]{0,1}\\d)",
 			"WebKit.version # (?<=AppleWeb[Kk]it/)\\d+[_.]{0,1}\\d+",
+			
 			"Gecko.group # Gecko(?=(/\\d+[_.]{0,1}\\d))",
 			"Gecko.name # Gecko(/\\d+[_.]{0,1}\\d)",
 			"Gecko.version # (?<=Gecko/)\\d+[_.]{0,1}\\d+",
+			
 			"Presto.group # Presto(?=(/\\d+[_.]{0,1}\\d))",
 			"Presto.name # Presto(/\\d+[_.]{0,1}\\d)",
 			"Presto.version # (?<=Presto/)\\d+[_.]{0,1}\\d+"
 			),
 		Browser(
-			"IE.group # MSIE(?=( \\d+[_.]{0,1}\\d+))",
-			"IE.name # MSIE \\d+[_.]{0,1}\\d+",
+			"IE.group # MSIE(?=( \\d+[_.]{0,1}\\w+))",
+			"IE.name # MSIE \\d+[_.]{0,1}\\w+",
 			"IE.version # (?<=MSIE )\\d+[_.]{0,1}\\d+",	
-			"Trident.group # Trident(?=(/\\d+[_.]{0,1}\\d+))",
-			"Trident.name # Trident/\\d+[_.]{0,1}\\d+",
+			
+			"Trident.group # Trident(?=(/\\d+[_.]{0,1}\\w+))",
+			"Trident.name # Trident/\\d+[_.]{0,1}\\w+",
 			"Trident.version # (?<=Trident/)\\d+[_.]{0,1}\\d+",
-			"Firefox.group # Firefox(?=(/\\d+[_.]{0,1}\\d+))",
-			"Firefox.name # Firefox/\\d+[_.]{0,1}\\d+",
+			
+			"Firefox.group # Firefox(?=(/\\d+[_.]{0,1}\\w+))",
+			"Firefox.name # Firefox/\\d+[_.]{0,1}\\w+",
 			"Firefox.version # (?<=Firefox/)\\d+[_.]{0,1}\\d+",
-			"Safari.group # Safari(?=(/\\d+[_.]{0,1}\\d+))",
-			"Safari.name # Safari/\\d+[_.]{0,1}\\d+",
+			
+			"FxiOS.group # FxiOS(?=(/\\d+[_.]{0,1}\\w+))",
+			"FxiOS.name # FxiOS/\\d+[_.]{0,1}\\w+",
+			"FxiOS.version # (?<=FxiOS/)\\d+[_.]{0,1}\\d+",
+			
+			"Safari.group # Safari(?=(/\\d+[_.]{0,1}\\w+))",
+			"Safari.name # Safari/\\d+[_.]{0,1}\\w+",
 			"Safari.version # (?<=Safari/)\\d+[_.]{0,1}\\d+",
-			"Chrome.group # Chrome(?=(/\\d+[_.]{0,1}\\d+))",
-			"Chrome.name # Chrome/\\d+[_.]{0,1}\\d+",
+			
+			"Chrome.group # Chrome(?=(/\\d+[_.]{0,1}\\w+))",
+			"Chrome.name # Chrome/\\d+[_.]{0,1}\\w+",
 			"Chrome.version # (?<=Chrome/)\\d+[_.]{0,1}\\d+",
-			"Opera.group # Opera(?=([/ ]\\d+[_.]{0,1}\\d+))",
-			"Opera.name # Opera[/ ]\\d+[_.]{0,1}\\d+",
+			
+			"Opera.group # Opera(?=([/ ]\\d+[_.]{0,1}\\w+))",
+			"Opera.name # Opera[/ ]\\d+[_.]{0,1}\\w+",
 			"Opera.version # (?<=Opera[/ ])\\d+[_.]{0,1}\\d+",
-			"UCBrowser.group # UCBrowser(?=([/ ]\\d+[_.]{0,1}\\d+))",
-			"UCBrowser.name # UCBrowser[/ ]\\d+[_.]{0,1}\\d+",
+			
+			"UCBrowser.group # UCBrowser(?=([/ ]\\d+[_.]{0,1}\\w+))",
+			"UCBrowser.name # UCBrowser[/ ]\\d+[_.]{0,1}\\w+",
 			"UCBrowser.version # (?<=UCBrowser[/ ])\\d+[_.]{0,1}\\d+"
 		 );
 

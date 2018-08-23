@@ -128,21 +128,22 @@ public abstract class Controller {
 		
 		if (log.isDebugEnabled()) {
 			LogPoint.markWebHeader();
-    		log.debug("UserAgent: {}",request.getHeader("user-agent"));
-            log.debug("Brower family: {}",userAgent.browser().getFamily());
-            log.debug("Brower group: {}",userAgent.browser().getGroup());
-            log.debug("Brower name: {}",userAgent.browser().getName());
-            log.debug("Brower version: {}",userAgent.browser().getVersion());
+    		log.debug("UA: {}",request.getHeader("user-agent"));
+    		log.debug("UA Mobile: {}",userAgent.isMobile());
+            log.debug("UA Brower family: {}",userAgent.browser().getFamily());
+            log.debug("UA Brower group: {}",userAgent.browser().getGroup());
+            log.debug("UA Brower name: {}",userAgent.browser().getName());
+            log.debug("UA Brower version: {}",userAgent.browser().getVersion());
             
-            log.debug("OS family: {}",userAgent.os().getFamily());
-            log.debug("OS group: {}",userAgent.os().getGroup());
-            log.debug("OS name: {}",userAgent.os().getName());
-            log.debug("OS version: {}",userAgent.os().getVersion());
+            log.debug("UA OS family: {}",userAgent.os().getFamily());
+            log.debug("UA OS group: {}",userAgent.os().getGroup());
+            log.debug("UA OS name: {}",userAgent.os().getName());
+            log.debug("UA OS version: {}",userAgent.os().getVersion());
             
-            log.debug("Engine family: {}",userAgent.engine().getFamily());
-            log.debug("Engine group: {}",userAgent.engine().getGroup());
-            log.debug("Engine name: {}",userAgent.engine().getName());
-            log.debug("Engine version: {}",userAgent.os().getVersion());
+            log.debug("UA Engine family: {}",userAgent.engine().getFamily());
+            log.debug("UA Engine group: {}",userAgent.engine().getGroup());
+            log.debug("UA Engine name: {}",userAgent.engine().getName());
+            log.debug("UA Engine version: {}",userAgent.engine().getVersion());
         
 			log.debug("Headers: {}",headers);
 			LogPoint.isMarkWebUserAgent();

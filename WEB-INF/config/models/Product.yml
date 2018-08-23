@@ -5,4 +5,7 @@ attributes:
     default: ~
   name: 
     type: String
-    default: ~
+    default: ~ 
+  price: 
+    type: Float
+    default: 0
