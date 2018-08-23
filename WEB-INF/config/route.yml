@@ -1,6 +1,10 @@
 root: 
   controller: Root
   action: index
+  
+your: 
+  controller: Product 
+  action: helloWorld  
 
 # sample: 
 #   controller: Sample

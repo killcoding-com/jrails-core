@@ -27,8 +27,8 @@ public class ProductController extends Controller {
 		request.setAttribute("g", g);
 	}
 	
-	public void indexAction() throws IOException, ServletException{
-		text(params.get("errmsg") + "");
+	public void helloWorldAction() throws IOException, ServletException{
+		text("Hello World!");
 	}
 	
 	@Override

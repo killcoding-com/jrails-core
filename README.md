@@ -31,7 +31,8 @@ public class ProductController extends Controller {
 }
 ...
 ```
-| 浏览器打开 [http://15001.krcloud01-a.killcoding.net/your](https://killcoding.com)
+| 浏览器打开 [https://15002.krcloud01-a.killcoding.net/your](https://killcoding.com)
+| 浏览器显示 "Hello World!";
 
 
 ### Class ActiveRecord
