@@ -128,6 +128,8 @@ public abstract class Controller {
 		
 		if (log.isDebugEnabled()) {
 			LogPoint.markWebHeader();
+			log.debug("Headers: {}",headers);
+			LogPoint.isMarkWebUserAgent();
     		log.debug("UA: {}",request.getHeader("user-agent"));
     		log.debug("UA Mobile: {}",userAgent.isMobile());
             log.debug("UA Brower family: {}",userAgent.browser().getFamily());
@@ -144,10 +146,6 @@ public abstract class Controller {
             log.debug("UA Engine group: {}",userAgent.engine().getGroup());
             log.debug("UA Engine name: {}",userAgent.engine().getName());
             log.debug("UA Engine version: {}",userAgent.engine().getVersion());
-        
-			log.debug("Headers: {}",headers);
-			LogPoint.isMarkWebUserAgent();
-			log.debug("UserAgent: {}",headers.get("user-agent"));
 			LogPoint.markWebCookie();
 			log.debug("Cookies: {}",cookies);
 			LogPoint.markWebParams();
