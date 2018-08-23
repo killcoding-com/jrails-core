@@ -34,7 +34,7 @@ public class ProductController extends Controller {
 | 浏览器打开 [http://15001.krcloud01-a.killcoding.net/your](https://killcoding.com)
 
 
-#### Class ActiveRecord
+### Class ActiveRecord
 | Source: WEB-INF/src/test/ActiveRecordTest
 ```
 ...
@@ -61,7 +61,7 @@ public void testCreateProduct() throws Exception {
 | 1 row in set (0.00 sec)   
 
 
-#### Class Query
+### Class Query
 | Source: WEB-INF/src/test/ActiveRecordTest
 ```
 ...
@@ -79,4 +79,3 @@ public void testGetFirstProduct() throws Exception {
 
 
 
-https://dillinger.io/
