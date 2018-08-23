@@ -6,6 +6,7 @@ import app.model.Product;
 import net.rails.support.Support;
 import net.rails.support.worker.CodeWorker;
 import net.rails.sql.query.Query;
+import java.util.Map;
 
 public class ActiveRecordTest extends TestCase {
 
@@ -36,6 +37,7 @@ public class ActiveRecordTest extends TestCase {
 
 	public void testGetFirstProduct() throws Exception {
 		Query query = new Query(new Product(g));
+		query.and("eq_code","IP6P");
 		Product product = query.first();
 		System.out.println("Product: " +  product);
 		assertNotNull("First Product",product);

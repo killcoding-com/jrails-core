@@ -69,6 +69,7 @@ import net.rails.sql.query.Query;
 ...
 public void testGetFirstProduct() throws Exception {
 	Query query = new Query(new Product(g));
+	query.and("eq_code","IP6P");
 	Product product = query.first();
 	System.out.println("Product: " +  product);
 	assertNotNull("First Product",product);
