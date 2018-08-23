@@ -5,6 +5,7 @@ CREATE TABLE `product`
 	`id` CHAR(16) NOT NULL,
 	`code` VARCHAR(100) COMMENT 'Code',
 	`name` VARCHAR(100) COMMENT 'Name',
+	`price` FLOAT COMMENT 'Price',
 	`created_user_id` CHAR(16),
 	`updated_user_id` CHAR(16),
 	`deleted_user_id` CHAR(16),
