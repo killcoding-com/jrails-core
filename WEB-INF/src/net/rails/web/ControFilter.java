@@ -50,6 +50,7 @@ public final class ControFilter implements Filter {
 		LogPoint.markWebUrl();
 		if(log.isDebugEnabled()){
 			log.debug("Remote Addr: {}",request.getRemoteAddr());
+			log.debug("X-Real-IP: {}",request.getHeader("X-Real-IP"));
 			String qs = request.getQueryString();
 			StringBuffer url = new StringBuffer("Request URL: ");
 			url.append(request.getRequestURL());

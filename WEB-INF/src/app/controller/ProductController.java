@@ -23,8 +23,11 @@ public class ProductController extends Controller {
 	public ProductController(FilterConfig config,HttpServletRequest request, HttpServletResponse response,Route route) throws Exception {
 		super(config, request, response,route);
 		g = new Global(this);
-		log.debug(Support.config().getLocales().loadYmls() + "");
 		request.setAttribute("g", g);
+	}
+	
+	public void indexAction() throws IOException, ServletException{
+		render();
 	}
 	
 	public void helloWorldAction() throws IOException, ServletException{
@@ -41,7 +44,6 @@ public class ProductController extends Controller {
 
 	@Override
 	protected AbsGlobal getGlobal() {
-		// TODO Auto-generated method stub
 		return g;
 	}
 

@@ -164,7 +164,10 @@ enum UAToken {
 		Browser(
 			"IE.group # MSIE(?=( \\d+[_.]{0,1}\\d+))",
 			"IE.name # MSIE \\d+[_.]{0,1}\\d+",
-			"IE.version # (?<=MSIE )\\d+[_.]{0,1}\\d+",			
+			"IE.version # (?<=MSIE )\\d+[_.]{0,1}\\d+",	
+			"Trident.group # Trident(?=(/\\d+[_.]{0,1}\\d+))",
+			"Trident.name # Trident/\\d+[_.]{0,1}\\d+",
+			"Trident.version # (?<=Trident/)\\d+[_.]{0,1}\\d+",
 			"Firefox.group # Firefox(?=(/\\d+[_.]{0,1}\\d+))",
 			"Firefox.name # Firefox/\\d+[_.]{0,1}\\d+",
 			"Firefox.version # (?<=Firefox/)\\d+[_.]{0,1}\\d+",

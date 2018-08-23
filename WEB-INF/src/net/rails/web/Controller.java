@@ -47,6 +47,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.OutputStream;
+import net.rails.tpl.Tpl;
+import net.rails.tpl.TplText;
+import net.rails.sql.query.Query;
+import net.rails.Define;
 
 @SuppressWarnings("unchecked")
 public abstract class Controller {
@@ -76,13 +80,13 @@ public abstract class Controller {
 			HttpServletResponse response, Route route) throws Exception {
 		super();
 		log = LoggerFactory.getLogger(getClass());
-		
+		userAgent = Support.userAgent(request.getHeader("user-agent"));
 		this.config = config;
 		this.request = request;
 		this.response = response;
 		this.session = request.getSession();
 		this.route = route;
-		userAgent = Support.userAgent(request.getHeader("user-agent"));
+
 		ajax = request.getHeader("X-Requested-With") != null;
 		final Enumeration<String> ens = request.getHeaderNames();
 		Map<String, Object> qs = QueryString.parse(request.getQueryString());
@@ -124,6 +128,22 @@ public abstract class Controller {
 		
 		if (log.isDebugEnabled()) {
 			LogPoint.markWebHeader();
+    		log.debug("UserAgent: {}",request.getHeader("user-agent"));
+            log.debug("Brower family: {}",userAgent.browser().getFamily());
+            log.debug("Brower group: {}",userAgent.browser().getGroup());
+            log.debug("Brower name: {}",userAgent.browser().getName());
+            log.debug("Brower version: {}",userAgent.browser().getVersion());
+            
+            log.debug("OS family: {}",userAgent.os().getFamily());
+            log.debug("OS group: {}",userAgent.os().getGroup());
+            log.debug("OS name: {}",userAgent.os().getName());
+            log.debug("OS version: {}",userAgent.os().getVersion());
+            
+            log.debug("Engine family: {}",userAgent.engine().getFamily());
+            log.debug("Engine group: {}",userAgent.engine().getGroup());
+            log.debug("Engine name: {}",userAgent.engine().getName());
+            log.debug("Engine version: {}",userAgent.os().getVersion());
+        
 			log.debug("Headers: {}",headers);
 			LogPoint.isMarkWebUserAgent();
 			log.debug("UserAgent: {}",headers.get("user-agent"));
@@ -267,7 +287,6 @@ public abstract class Controller {
 	public void file(InputStream is, String filename,String contentType) throws IOException {
 		if (route.isActive()) {
 			route.setActive(false);
-// 			BufferedOutputStream bos = null;
             OutputStream os = null;
 			try{
 				String charset = Support.config().env().getApplicationCharset();
@@ -276,25 +295,27 @@ public abstract class Controller {
 				TokenWorker token = userAgent.browser();
 				String disp = "attachment; filename*=\"" + filename + "\"";
 				if (token.getGroup() == null) {
-					disp = "attachment; filename*=\"" + filename + "\"";
+				    disp = "attachment; filename=\"" + filename + "\"";
 				} else if (token.getGroup().equals("MSIE")) {
 					disp = "attachment; filename=\"" + filename + "\"";
-				} else if (token.getGroup().equals("Chrome")) {
+				}else if (token.getGroup().equals("Safari")) {
+					disp = "attachment; filename=\"" + filename + "\"";
+				}else if (token.getGroup().equals("Trident")) {
+					disp = "attachment; filename=\"" + filename + "\"";
+				}else if (token.getGroup().equals("Chrome")) {
 					disp = "attachment; filename=\"" + filename + "\"";
 				} else {
 					disp = "attachment; filename=*\"" + filename + "\"";
 				}
 				response.addHeader("Content-Disposition", disp);
-				// response.addHeader("Transfer-Encoding", "chunked");
 				response.setContentType(contentType);
 				
-				// bos = new BufferedOutputStream(response.getOutputStream());
 				os = response.getOutputStream();
 				byte[] buff = new byte[1024];
 				int bytesRead;
 				while (-1 != (bytesRead = is.read(buff, 0, buff.length))) {
 					os.write(buff, 0, bytesRead);
-					os.flush(); /* throws IOException */
+					os.flush(); 
 				}
 			}finally{
 				is.close();
@@ -592,9 +613,8 @@ public abstract class Controller {
 	public Date parseDate(String name, Date def) throws ParseException {
 		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formates",
 				"date"));
-		if (Support.string(parseString(name)).blank())
-			return def;
-
+		if (Support.string(parseString(name)).blank()) return def;
+		
 		java.util.Date d = df.parse(parseString(name));
 		return new Date(d.getTime());
 	}
@@ -606,8 +626,7 @@ public abstract class Controller {
 	public Time parseTime(String name, Time def) throws ParseException {
 		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formates",
 				"time"));
-		if (Support.string(parseString(name)).blank())
-			return def;
+		if (Support.string(parseString(name)).blank()) return def;
 
 		java.util.Date d = df.parse(parseString(name));
 		return new Time(d.getTime());
@@ -645,6 +664,50 @@ public abstract class Controller {
 			response.getWriter().write(json.toString());
 		}
 	}
+	
+	public String tpl(String tplFile) throws IOException{
+		StringBuffer sbf = new StringBuffer("Route: " + route.getController() + "/" + route.getAction());
+		sbf.append("\nTplFile: " + tplFile);
+		TplText text = new TplText(sbf.toString(),getGlobal(),tplFile);
+		text.params().put("Query", Query.class);
+		text.params().put("Support", Support.class);
+		text.params().put("Log", LoggerFactory.getLogger(getClass()));
+		text.params().put("Json", Json.class);
+		text.params().put("g",getGlobal());
+		Tpl tpl = new Tpl(getGlobal(),text);
+		if(tplFile.endsWith(".js")){
+			tpl.setCompressed(true);
+			tpl.setDocType(Tpl.DOCTYPE_JS);
+		}else if(tplFile.endsWith(".css")){
+			tpl.setCompressed(true);
+			tpl.setDocType(Tpl.DOCTYPE_CSS);
+		}else if(tplFile.endsWith(".html")){
+			tpl.setCompressed(true);
+			tpl.setDocType(Tpl.DOCTYPE_HTML);
+		}else{
+			tpl.setCompressed(true);
+			tpl.setDocType(Tpl.DOCTYPE_OTHER);
+		}		
+		return tpl.generate();
+	}
+	
+	public String jsTpl() throws IOException{
+		String tplFile = getName() + "/" + getRoute().getAction() + ".tpl.js";
+		return tpl(tplFile);
+	}
+	
+	public String htmlTpl() throws IOException{
+		String tplFile = getName() + "/" + getRoute().getAction() + ".tpl.html";
+		return tpl(tplFile);
+	}
+	
+	public void toHtmlTpl() throws IOException {
+	    text(htmlTpl());
+	}
+	
+	public void toJsTpl() throws IOException {
+	    text(jsTpl());
+	}	
 
 	public void sendError(int code) throws IOException {
 		if (route.isActive()) {
