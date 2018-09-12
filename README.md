@@ -1,6 +1,6 @@
 # JRAILS CORE (Short Name: JRC) 是什么？
 - JRC是一个相对较新的Web应用程序框架,构建在Java语言之上并使用了更简易的方法实现了ORM & MVC,并引用了RESTful风格.
-- JRC作为[KILLCODING.COM](KILLCODING.COM)的底层框架,而它能做的不仅仅如此.
+- JRC作为[KILLCODING.COM](https://killcoding.com)的底层框架,而它能做的不仅仅如此.
 - JRC坚决地抛弃了XML配置,在大多数情况下你无须写配置文件.
 - JRC会自动将你编写的Javascript变成微型的*.mini.js.
 
