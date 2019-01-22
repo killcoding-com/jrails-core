@@ -180,7 +180,8 @@ public class Adapter {
 		try{
 			log.info("Find SQL By DB: {}",sql.getSql());
 			log.info("SQL Params: {}",sql.getParams());	
-		    connection = openQueryConnection();
+		    //connection = openQueryConnection();
+		    connection = open();
 			statement = connection.prepareStatement(sql.getSql());
 			if(sql.getMaxRows() > 0){
 				statement.setMaxRows(sql.getMaxRows());
@@ -203,7 +204,12 @@ public class Adapter {
 		    return rows;
 		}finally{
 			LogPoint.unmark();
-			closeQueryConnection(result,statement,connection);
+			//closeQueryConnection(result,statement,connection);
+			if (result != null){
+				log.debug("Close Query Result");
+				result.close();
+			}
+			closeConnection(statement,connection);
 		}
 	}
 	

@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import net.rails.support.Support;
 
+
 public final class Cache {
 
 	private static AbsCacheApi api;
@@ -49,5 +50,9 @@ public final class Cache {
 		log.debug("Remove All Cache");
 		api.removeAll();
 	}
+	
+	public static String[] getNames(){
+		return api.getNames();
+	}	
 
 }

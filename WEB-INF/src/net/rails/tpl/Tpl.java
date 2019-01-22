@@ -71,7 +71,7 @@ public class Tpl implements ReferenceInsertionEventHandler,NullSetEventHandler, 
 					log.debug(message);
 			}
 			public void log(int level, String message, Throwable t) {
-					log.error(message,t);
+					log.warn(message,t);
 			}
 			public boolean isLevelEnabled(int level) {
 				return true;
@@ -80,8 +80,8 @@ public class Tpl implements ReferenceInsertionEventHandler,NullSetEventHandler, 
 		CHARSET = Support.config().env().getApplicationCharset();
 		List<String> directives = Arrays.asList(
 				//include myself class
-//				net.rails.tpl.worker.IfnullWorker.class.getName(),
-//				net.rails.tpl.worker.IfnotnullWorker.class.getName()
+				 net.rails.tpl.Ifnull.class.getName(),
+				 net.rails.tpl.Ifnotnull.class.getName()
 				);
 		Velocity.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM,logChute);
 		Velocity.setProperty(Velocity.RUNTIME_LOG,logChute);
@@ -91,6 +91,12 @@ public class Tpl implements ReferenceInsertionEventHandler,NullSetEventHandler, 
 		Velocity.setProperty("input.encoding",CHARSET);
 		Velocity.setProperty("output.encoding", CHARSET);
 		Velocity.setProperty("contentType", "text/html;charset=" + CHARSET);
+		Velocity.setProperty("directive.set.null.allowed",true);
+		
+		Velocity.setProperty("classpath.resource.loader.cache",false);
+		Velocity.setProperty("velocity.engine.resource.manager.cache.enabled",false);
+		Velocity.setProperty("resource.manager.cache.enabled",false);
+		
 		if(directives.size() > 0)
 			Velocity.setProperty("userdirective",Support.array(directives).join(","));
 		
@@ -231,7 +237,7 @@ public class Tpl implements ReferenceInsertionEventHandler,NullSetEventHandler, 
 	@Override
 	public boolean shouldLogOnNullSet(String lhs, String rhs) {
 		log.debug("shouldLogOnNullSet: Set({} = {})",lhs,rhs);
-		return false;
+		return true;
 	}
 
 	@SuppressWarnings("rawtypes")
@@ -333,13 +339,13 @@ public class Tpl implements ReferenceInsertionEventHandler,NullSetEventHandler, 
 		compressor.setRemoveIntertagSpaces(true);      //removes iter-tag whitespace characters
 		compressor.setRemoveQuotes(true);              //removes unnecessary tag attribute quotes
 		compressor.setSimpleDoctype(true);             //simplify existing doctype
-		compressor.setRemoveScriptAttributes(true);    //remove optional attributes from script tags
-		compressor.setRemoveStyleAttributes(true);     //remove optional attributes from style tags
-		compressor.setRemoveLinkAttributes(true);      //remove optional attributes from link tags
-		compressor.setRemoveFormAttributes(true);      //remove optional attributes from form tags
-		compressor.setRemoveInputAttributes(true);     //remove optional attributes from input tags
+		compressor.setRemoveScriptAttributes(false);    //remove optional attributes from script tags
+		compressor.setRemoveStyleAttributes(false);     //remove optional attributes from style tags
+		compressor.setRemoveLinkAttributes(false);      //remove optional attributes from link tags
+		compressor.setRemoveFormAttributes(false);      //remove optional attributes from form tags
+		compressor.setRemoveInputAttributes(false);     //remove optional attributes from input tags
 		compressor.setSimpleBooleanAttributes(true);   //remove values from boolean tag attributes
-		compressor.setRemoveJavaScriptProtocol(true);  //remove "javascript:" from inline event handlers
+		compressor.setRemoveJavaScriptProtocol(false);  //remove "javascript:" from inline event handlers
 //		compressor.setRemoveHttpProtocol(true);        //replace "http://" with "//" inside tag attributes
 //		compressor.setRemoveHttpsProtocol(true);       //replace "https://" with "//" inside tag attributes
 		compressor.setPreserveLineBreaks(false);        //keep \n

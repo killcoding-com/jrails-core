@@ -6,7 +6,7 @@ wget https://xxx.com/jsch-xxx.jar
 -->
 <project name="jrails-core" default="build" basedir=".">
 	<property environment="env" />
-	<property name="jr.version" value="1.0.20180912" />
+	<property name="jr.version" value="1.0.20190211" />
 	<property name="jr.charset" value="UTF-8" />
 	<property name="jr.root" location="../" />
 	<property name="jr.docs" value="${jr.root}/public/docs" />

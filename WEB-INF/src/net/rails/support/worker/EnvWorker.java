@@ -93,7 +93,7 @@ public final class EnvWorker {
 		return t;
 	}
 
-	public <V> V gets(String keys, V def) {
+	public <V> V getOrDefault(String keys, V def) {
 		V v = Support.map(getRoot()).gets(keys);
 		return v == null ? def : v;
 	}
@@ -102,7 +102,7 @@ public final class EnvWorker {
 		return Support.map(getRoot()).gets(keys);
 	}
 
-	public <V> V gets(String... keyarr) {
+	public <V> V gets(String...keyarr) {
 		return Support.map(getRoot()).gets(keyarr);
 	}
 

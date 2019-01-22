@@ -36,6 +36,7 @@ import net.rails.sql.worker.HasWorker;
 import net.rails.sql.worker.SqlWorker;
 import net.rails.sql.worker.UpdateWorker;
 import net.rails.support.Support;
+import net.rails.support.worker.ObjectWorker;
 
 @SuppressWarnings("serial")
 public abstract class ActiveRecord extends IndexMap<String, Object> implements Cloneable, java.io.Serializable {
@@ -702,10 +703,11 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	
 	public Number getNumber(String attr,Number def) {
 		Object v = getObject(attr);
-		if (v == null)
+		if (Support.object(v).blank()){
 			return def;
-		if(v instanceof Number)
+		}if(v instanceof Number){
 			return (Number) v;
+		}
 		try{
 			DecimalFormat df = new DecimalFormat();
 			return df.parse(v.toString());

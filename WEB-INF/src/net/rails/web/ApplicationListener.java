@@ -161,7 +161,7 @@ public class ApplicationListener implements ServletContextListener {
 			log.info("Starting Jobs");
 			if (jobs != null) {
 				SimpleThreadPool threadPool = new SimpleThreadPool();
-				threadPool.setThreadCount(Support.env().gets("quartz.system_thread_count",10));
+				threadPool.setThreadCount(Support.env().getOrDefault("quartz.system_thread_count",10));
 				threadPool.setThreadPriority(Thread.NORM_PRIORITY);
 				threadPool.setThreadNamePrefix(Define.SYSTEM_SCHEDULER);
 				threadPool.initialize();

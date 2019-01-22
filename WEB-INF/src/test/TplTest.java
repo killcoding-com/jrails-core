@@ -25,6 +25,7 @@ import net.rails.tpl.TplText;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import java.util.HashMap;
 
 public class TplTest 
     extends TestCase
@@ -50,8 +51,21 @@ public class TplTest
     	try{
         	g.setLocale("default");
         	TplText text = new TplText("chinese", g,"chinese.tpl.html");
+        	Map a = new HashMap();
+        	Map b = new HashMap();
+        	b.put("code", "C123456");
+        	a.put("b",b);
+        	text.params().put("a", a);
         	Tpl tpl = new Tpl(g,text);
-        	System.out.println(tpl.generate());
+        	System.out.println("Debug 1: " + tpl.generate());
+        	
+        // 	text = new TplText("chinese", g,"chinese.tpl.html");
+        // 	b.put("code", null);
+        // 	a.put("b",b);
+        // 	text.params().put("a", a);
+        //     tpl = new Tpl(g,text);
+        // 	System.out.println("Debug 2: " + tpl.generate());
+        	
             assertTrue( true );
     	}catch(Exception e){
     		e.printStackTrace();
