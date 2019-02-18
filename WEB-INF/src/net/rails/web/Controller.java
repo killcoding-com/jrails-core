@@ -51,6 +51,9 @@ import net.rails.tpl.Tpl;
 import net.rails.tpl.TplText;
 import net.rails.sql.query.Query;
 import net.rails.Define;
+import net.rails.active_record.Attribute;
+import net.rails.active_record.validate.TypeException;
+import java.util.Arrays;
 
 @SuppressWarnings("unchecked")
 public abstract class Controller {
@@ -501,23 +504,55 @@ public abstract class Controller {
 	}
 
 	public Map<String, Object> form(String name, Map<String, Object> params) {
-		final List<String> paramKeys = Support.map(params).keys();
-		final Map<String, Object> m = new IndexMap<String, Object>();
-		for (Iterator<String> iterator = paramKeys.iterator(); iterator
-				.hasNext();) {
-			String key = iterator.next();
-			String regex = MessageFormat.format("^({0}\\[\\w+\\])", name);
-			Pattern p = Pattern.compile(regex);
-			Matcher mat = p.matcher(key);
-			if (mat.find()) {
-				p = Pattern.compile("\\[\\w+\\]");
-				mat = p.matcher(key);
-				if (mat.find())
-					m.put(mat.group().replaceFirst("\\[", "")
-							.replaceFirst("\\]", ""), params.get(key));
-			}
-		}
-		return m;
+	    try{
+    	    ActiveRecord ar = ActiveRecord.evalModel(getGlobal(), name);
+    		final List<String> paramKeys = Support.map(params).keys();
+    		final Map<String, Object> m = new IndexMap<String, Object>();
+    		for (Iterator<String> iterator = paramKeys.iterator(); iterator
+    				.hasNext();) {
+    			String key = iterator.next();
+    			String regex = MessageFormat.format("^({0}\\[\\w+\\])", name);
+    			Pattern p = Pattern.compile(regex);
+    			Matcher mat = p.matcher(key);
+    			if (mat.find()) {
+    				p = Pattern.compile("\\[\\w+\\]");
+    				mat = p.matcher(key);
+    				if (mat.find()){
+    				    String attr = mat.group().replaceFirst("\\[", "").replaceFirst("\\]", "");
+    				    Object value = params.get(key);
+    				    if(ar == null){
+    				        m.put(attr, value);
+    				    }else{
+        				     if (!Arrays.asList("id",
+            						"created_user_id", "updated_user_id", "deleted_user_id",
+            						"created_at", "updated_at", "deleted_at", "deleted")
+            						.contains(attr)) {
+            				        Attribute attribute = ar.getAttribute(attr); 
+            				        Object newValue = null;
+            				        String type = attribute.getType();
+            				        if(type.equals("Timestamp")){
+            				            newValue = parseTimestamp(key);
+            				        }else if(type.equals("Date")){
+            				            newValue = parseDate(key);
+            				        }else if(type.equals("Time")){
+            				            newValue = parseTime(key);
+            				        }else{
+            				            newValue = attribute.parse(value);
+            				        }
+            				        m.put(attr, newValue);
+    						}else{
+    						     m.put(attr, value);
+    						}
+
+    				    }
+    				}
+    			}
+    		}
+    		return m;
+	    }catch(Exception e){
+	        log.error(e.getMessage(),e);
+	        return null;
+	    }
 	}
 
 	public Map<String, ? extends Object> form(String name) {
@@ -596,8 +631,7 @@ public abstract class Controller {
 	}
 
 	public Timestamp parseTimestamp(String name, Timestamp def) throws ParseException {
-		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formates",
-				"datetime"));
+		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formats", "datetime"));
 		if (Support.string(parseString(name)).blank())
 			return def;
 
@@ -610,7 +644,7 @@ public abstract class Controller {
 	}
 
 	public Date parseDate(String name, Date def) throws ParseException {
-		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formates",
+		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formats",
 				"date"));
 		if (Support.string(parseString(name)).blank()) return def;
 		
@@ -623,7 +657,7 @@ public abstract class Controller {
 	}
 
 	public Time parseTime(String name, Time def) throws ParseException {
-		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formates",
+		SimpleDateFormat df = new SimpleDateFormat(getGlobal().t("formats",
 				"time"));
 		if (Support.string(parseString(name)).blank()) return def;
 

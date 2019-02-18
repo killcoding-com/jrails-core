@@ -859,26 +859,50 @@ public abstract class ActiveRecord extends IndexMap<String, Object> implements C
 	}
 
 	public static ActiveRecord eval(AbsGlobal g,String table){
+	    String modelName = Support.inflect(table).camelcase();
 		try{
-			Class cls = Class.forName("app.model." + Support.inflect(table).camelcase());
+			Class cls = Class.forName("app.model." + modelName);
 			Constructor con = cls.getConstructor(AbsGlobal.class);
 			return (ActiveRecord) con.newInstance(g);
 		}catch(Exception e){
-			LoggerFactory.getLogger(ActiveRecord.class).error(e.getMessage(),e);
+			LoggerFactory.getLogger(ActiveRecord.class).debug("{} not model!",modelName);
 			return null;
 		}
 	}
 	
-	public static ActiveRecord eval(AbsGlobal g,String table,Object id){
+	public static ActiveRecord evalModel(AbsGlobal g,String modelName){
 		try{
-			Class cls = Class.forName("app.model." + Support.inflect(table).camelcase());
+			Class cls = Class.forName("app.model." + modelName);
+			Constructor con = cls.getConstructor(AbsGlobal.class);
+			return (ActiveRecord) con.newInstance(g);
+		}catch(Exception e){
+			LoggerFactory.getLogger(ActiveRecord.class).debug("{} not model!",modelName);
+			return null;
+		}
+	}	
+	
+	public static ActiveRecord eval(AbsGlobal g,String table,Object id){
+	    String modelName = Support.inflect(table).camelcase();
+		try{
+			Class cls = Class.forName("app.model." + modelName);
 			Constructor con = cls.getConstructor(AbsGlobal.class,Object.class);
 			return (ActiveRecord) con.newInstance(g,id);
 		}catch(Exception e){
-			LoggerFactory.getLogger(ActiveRecord.class).error(e.getMessage(),e);
+			LoggerFactory.getLogger(ActiveRecord.class).debug("{} not model!",modelName);
 			return null;
 		}
 	}
+	
+	public static ActiveRecord evalModel(AbsGlobal g,String modelName,Object id){
+		try{
+			Class cls = Class.forName("app.model." + modelName);
+			Constructor con = cls.getConstructor(AbsGlobal.class,Object.class);
+			return (ActiveRecord) con.newInstance(g,id);
+		}catch(Exception e){
+			LoggerFactory.getLogger(ActiveRecord.class).debug("{} not model!",modelName);
+			return null;
+		}
+	}	
 
 	@SuppressWarnings("unchecked")
 	public static <T extends ActiveRecord> List<T> find(T t, SqlWorker sql)
